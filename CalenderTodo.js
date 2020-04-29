@@ -13,24 +13,39 @@ const DismissKeyboard = ({ children }) => (
 
        
 
-export default function CalendarTodo( ) {
+export default function CalendarTodo( {route, navigation}) {
+
+
+  const [data, setData] = useState([]);
+  const {asd} =route.params; //vastaanottaa tiedot CalendarScreenista
+  const {day} = route.params;
+
+
+
+
   return (
     <DismissKeyboard>
         
           <View style={styles.container}>
                     
-                 
                <Text>CalendarTodo</Text>
             
-              
-
             <View style={styles.container}>
-                    <TextInput 
-                     style={{fontSize: 18, width: 200}} 
-                     
-                      placeholder="some text"
-                     
-                    />
+                 <Text>{(asd)}</Text> {/* tulostaa tuodun  */}
+                 <Text>{(day)}</Text>
+
+
+
+                {/* tämä flatlist tallentaa datan, myöhemmin SQliteen */}
+                <FlatList
+
+                  data={data}
+                  renderItem={({item}) => (
+                    
+                    <Text>testi{item.asd}{item.day}</Text>
+                  )}
+                  />
+                  
 
             </View>
             

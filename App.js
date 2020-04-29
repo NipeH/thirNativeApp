@@ -16,7 +16,7 @@ import MapScreen from './MapScreen';
 import ConvertScreen from './ConvertScreen';
 import CalendarScreen from './CalendarScreen';
 import CalenderTodo from './CalenderTodo';
-import CourseScreen from './CourseScreen';
+import CourseScreen from './CourseScreen'; 
 
 const Stack = createStackNavigator();
 

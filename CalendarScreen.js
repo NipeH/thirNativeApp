@@ -16,12 +16,16 @@ const DismissKeyboard = ({ children }) => (
 
 
 export default function CalendarScreen( {route, navigation}) {
+              const [asd, setAsd] =useState('');
+              const [data, setData] = useState([]);
 
-const showDayTest =(date) =>{
-  alert(date);
-  navigation.navigate('Todo')
-}
- 
+              const dayPressed =() =>{
+                const asd = "asdasdasd";
+                setAsd(asd)
+              
+                setData([...data, {asd}]);
+                console.log(data);
+              }
 
 
 
@@ -30,9 +34,12 @@ const showDayTest =(date) =>{
   return (
     <DismissKeyboard>
         
-          <View style={styles.container}>
+         <View style={styles.container}>
                   
                   <CalendarList
+                    // https://github.com/wix/react-native-calendars <-- DOCUMENTS ABOUT THIS CALENDAR!
+
+
                     // Callback which gets executed when visible months change in scroll view. Default = undefined
                     onVisibleMonthsChange={(months) => {console.log('now these months are visible', months);}}
                     // Max amount of months allowed to scroll to the past. Default = 50
@@ -45,12 +52,13 @@ const showDayTest =(date) =>{
                     showScrollIndicator={true}
 
 
+                    
 
 
-                    //onDayPress={(day) => {console.log('selected day', day)}
-                    onDayPress={({dateString}) => showDayTest(dateString)}
+
+                    onDayPress={(day) => {dayPressed(), day}}
+                    //onDayPress={({dateString}) => showDayTest(dateString)}
                         
-                
                      // prints object on console
                     showWeekNumbers={true}
                     minDate={new Date} // can't use anything in past
@@ -58,8 +66,15 @@ const showDayTest =(date) =>{
                     />
 
                    
-
-           
+                    <FlatList 
+                           data={data}
+                           renderItem={({item}) => (
+                             navigation.navigate('Todo', item)>
+                           <Text>testi{item.asd}{item.day}</Text>
+             
+                         
+                         )}
+                        /> 
         
             </View>
     </DismissKeyboard>

@@ -102,7 +102,7 @@ return (
       <FlatList 
         style={{marginLeft : "5%"}}
         keyExtractor={item => item.id.toString()} 
-        renderItem={({item}) => <View style={styles.listcontainer}><Text style={{fontSize: 18}}>{item.title}, {item.credits}, {item.pvm}</Text>
+        renderItem={({item}) => <View style={styles.listcontainer}><Text style={{fontSize: 18}}>title: {item.title}, credits: {item.credits}, pvm: {item.pvm}</Text>
         <Text style={{fontSize: 18, color: '#0000ff'}} onPress={() => deleteItem(item.id)}> Done</Text></View>} 
         data={courses} 
         ItemSeparatorComponent={listSeparator} 
