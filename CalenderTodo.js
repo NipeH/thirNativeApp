@@ -1,5 +1,6 @@
 import React, {Component, useState} from 'react';
 import { StyleSheet, Text, View, Button, Alert, TextInput, Image, FlatList, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { useTheme } from '@react-navigation/native';
 
 
 
@@ -15,12 +16,19 @@ const DismissKeyboard = ({ children }) => (
 
 export default function CalendarTodo( {route, navigation}) {
 
-
+  const [teksti, setTeksti] = useState('');
+  const [todo, setTodo] = useState('');
   const [data, setData] = useState([]);
-  const {asd} =route.params; //vastaanottaa tiedot CalendarScreenista
+  const {asd} =route.params; // vastaanottaa tiedot CalendarScreenista
+  
   const {day} = route.params;
 
+  const submitButton = () => {
+    const todo = asd + teksti;
+    setTodo(todo)
+    setData([...data, {todo}]);
 
+  }
 
 
   return (
@@ -31,24 +39,40 @@ export default function CalendarTodo( {route, navigation}) {
                <Text>CalendarTodo</Text>
             
             <View style={styles.container}>
-                 <Text>{(asd)}</Text> {/* tulostaa tuodun  */}
-                 <Text>{(day)}</Text>
+                 <Text>{(asd)}</Text>
+
+              
+              <TextInput // Syötä TODO tai jtn tekstiä tietylle päivämäärälle 
+              style={{width: 200,height:30, borderColor: 'gray', borderWidth: 2}}
+              onChangeText={teksti => setTeksti(teksti)}
+              value={teksti}
+              
+              />
+
+                <Button title="Submit" onPress={submitButton}/> 
+                  
 
 
 
-                {/* tämä flatlist tallentaa datan, myöhemmin SQliteen */}
-                <FlatList
+                
+                
+                  
+
+            </View>
+            <View style ={styles.container}>
+
+                <FlatList // TOIMII tulostaa asdasdasd{teksti}
 
                   data={data}
                   renderItem={({item}) => (
                     
-                    <Text>testi{item.asd}{item.day}</Text>
+                    <Text>{item.todo}</Text>
                   )}
                   />
-                  
+
+
 
             </View>
-            
         
             </View>
     </DismissKeyboard>

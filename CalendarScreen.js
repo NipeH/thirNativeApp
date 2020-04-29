@@ -5,13 +5,7 @@ import SettingScreen from './SettingScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-// Keyboard piiloon
-const DismissKeyboard = ({ children }) => (
 
-          <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-            { children }
-          </TouchableWithoutFeedback>
-        ); 
 
 
 
@@ -19,6 +13,11 @@ export default function CalendarScreen( {route, navigation}) {
               const [asd, setAsd] =useState('');
               const [data, setData] = useState([]);
 
+              
+              
+              
+              
+              
               const dayPressed =() =>{
                 const asd = "asdasdasd";
                 setAsd(asd)
@@ -32,7 +31,7 @@ export default function CalendarScreen( {route, navigation}) {
 
 
   return (
-    <DismissKeyboard>
+    
         
          <View style={styles.container}>
                   
@@ -70,14 +69,14 @@ export default function CalendarScreen( {route, navigation}) {
                            data={data}
                            renderItem={({item}) => (
                              navigation.navigate('Todo', item)>
-                           <Text>testi{item.asd}{item.day}</Text>
+                           <Text>testi{item.asd}</Text>
              
                          
                          )}
                         /> 
         
             </View>
-    </DismissKeyboard>
+    
   );
   }
 
