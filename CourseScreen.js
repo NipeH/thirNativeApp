@@ -79,8 +79,6 @@ return (
   
     <View style={styles.container}>
 
-
-
       {/* SQL LITE DEMOA */}
        <View style={styles.container}>
 

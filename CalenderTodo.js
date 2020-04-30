@@ -1,8 +1,9 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useState, useEffect} from 'react';
 import { StyleSheet, Text, View, Button, Alert, TextInput, Image, FlatList, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 
 
+import * as SQLite from 'expo-sqlite';
 
 // Keyboard piiloon
 const DismissKeyboard = ({ children }) => (
@@ -19,17 +20,74 @@ export default function CalendarTodo( {route, navigation}) {
   const [teksti, setTeksti] = useState('');
   const [todo, setTodo] = useState('');
   const [data, setData] = useState([]);
+  const [todos, setTodos] = useState([]);
   const {asd} =route.params; // vastaanottaa tiedot    CalendarScreenista 
+  const db = SQLite.openDatabase('calendardb1.db');
+
   
-  const {day} = route.params;
+ 
 
-  const submitButton = () => {
-    const todo = asd + teksti;
-    setTodo(todo)
-    setData([...data, {todo}]);
 
-  }
+         //Submits the todo text value and calendar's date
+        /*   const submitButton = () => {
+            const todo = asd + teksti;
+            setTodo(todo)
+            setData([...data, {todo}]);
 
+          }  */
+
+          // SQLite hommat
+          
+          // Creates SQLite tables for id, asd and teksti
+          useEffect(()=> {
+            db.transaction(tx => {
+              tx.executeSql('create table if not exists todotable ( id integer primary key not null, todo text);');
+            })
+          }
+          )
+
+          // Save todo (replaces submitButton)
+          const saveTodo = () => {
+          const todo = asd + teksti;
+  
+            db.transaction(tx => {
+                tx.executeSql('insert into todotable (todo) values (?);', [todo]);    
+              }, null, updateTodo
+            )
+            console.log();
+          }
+
+          // Update todolist
+          const updateTodo = () => {
+            db.transaction(tx => {
+              tx.executeSql('Select * from todotable;', [], (_, { rows }) =>
+              setTodos(rows._array)
+              )
+            })
+          }
+
+          // Delete todo
+          const deleteTodo = (id) => {
+            db.transaction(
+              tx => {
+                tx.executeSql('delete from todotable where id = ?;', [id]);
+              }, null, updateTodo
+            )
+          }
+
+
+          const listSeparator = () => {
+            return (
+              <View
+                style={{
+                  height: 10,
+                  width: "80%",
+                  backgroundColor: "#fff",
+                  marginLeft: "10%"
+                }}
+              />
+            );
+          };
 
   return (
     <DismissKeyboard>
@@ -39,29 +97,21 @@ export default function CalendarTodo( {route, navigation}) {
                <Text>CalendarTodo</Text>
             
             <View style={styles.container}>
-                 <Text>{(asd)}</Text>
+                 <Text>Chosen date {(asd)}</Text>
 
-              
               <TextInput // Syötä TODO tai jtn tekstiä tietylle päivämäärälle 
               style={{width: 200,height:30, borderColor: 'gray', borderWidth: 2}}
               onChangeText={teksti => setTeksti(teksti)}
               value={teksti}
               
               />
-
-                <Button title="Submit" onPress={submitButton}/> 
-                  
-
-
-
-                
-                
-                  
-
+                <Button title="Submit" onPress={saveTodo}/> 
+              
             </View>
             <View style ={styles.container}>
 
-                <FlatList // TOIMII tulostaa asdasdasd{teksti}
+              {/*   Flatlist ilman SQLitea
+              <FlatList // TOIMII tulostaa asdasdasd{teksti}
 
                   data={data}
                   renderItem={({item}) => (
@@ -69,12 +119,24 @@ export default function CalendarTodo( {route, navigation}) {
                     <Text>{item.todo}</Text>
                   )}
                   />
+              */}
 
-
+            <FlatList 
+            style={{marginLeft : "5%"}}
+            keyExtractor={item => item.id.toString()} 
+            renderItem={({item}) => <View style={styles.listcontainer}>
+              <Text style={{fontSize: 18}}>{item.id}. {item.todo}</Text>
+            <Text style={{fontSize: 18, color: '#0000ff'}} onPress={() => deleteTodo(item.id)}> Delete</Text>
+                                    </View>} 
+                                    
+            data={todos} 
+            ItemSeparatorComponent={listSeparator} 
+            
+          />   
 
             </View>
         
-            </View>
+          </View>
     </DismissKeyboard>
   );
   }
@@ -110,3 +172,47 @@ const styles = StyleSheet.create({
     },
   }); 
   
+
+
+
+
+/*  
+
+//TOIMIVA FLATLIST TURVAAN
+
+
+<DismissKeyboard>
+        
+  <View style={styles.container}>
+            
+       <Text>CalendarTodo</Text>
+    
+    <View style={styles.container}>
+         <Text>{(asd)}</Text>
+
+      <TextInput // Syötä TODO tai jtn tekstiä tietylle päivämäärälle 
+      style={{width: 200,height:30, borderColor: 'gray', borderWidth: 2}}
+      onChangeText={teksti => setTeksti(teksti)}
+      value={teksti}
+      
+      />
+        <Button title="Submit" onPress={submitButton}/> 
+      
+    </View>
+    <View style ={styles.container}>
+
+        <FlatList // TOIMII tulostaa asdasdasd{teksti}
+
+          data={data}
+          renderItem={({item}) => (
+            
+            <Text>{item.todo}</Text>
+          )}
+          />
+
+
+
+    </View>
+
+    </View>
+</DismissKeyboard> */
