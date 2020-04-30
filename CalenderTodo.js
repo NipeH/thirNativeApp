@@ -19,7 +19,7 @@ export default function CalendarTodo( {route, navigation}) {
   const [teksti, setTeksti] = useState('');
   const [todo, setTodo] = useState('');
   const [data, setData] = useState([]);
-  const {asd} =route.params; // vastaanottaa tiedot CalendarScreenista
+  const {asd} =route.params; // vastaanottaa tiedot    CalendarScreenista 
   
   const {day} = route.params;
 

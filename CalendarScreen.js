@@ -5,29 +5,15 @@ import SettingScreen from './SettingScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-
-
-
-
 export default function CalendarScreen( {route, navigation}) {
               const [asd, setAsd] =useState('');
               const [data, setData] = useState([]);
 
-              
-              
-              
-              
-              
-              const dayPressed =() =>{
-                const asd = "asdasdasd";
+              const dayPressed = (date) => {
+                const asd = date.day + '.' + date.month + '.' + date.year + ' ';
                 setAsd(asd)
-              
                 setData([...data, {asd}]);
-                console.log(data);
               }
-
-
-
 
 
   return (
@@ -50,12 +36,7 @@ export default function CalendarScreen( {route, navigation}) {
                     // Enable or disable vertical scroll indicator. Default = false
                     showScrollIndicator={true}
 
-
-                    
-
-
-
-                    onDayPress={(day) => {dayPressed(), day}}
+                    onDayPress={(day) => {dayPressed(day), day}}
                     //onDayPress={({dateString}) => showDayTest(dateString)}
                         
                      // prints object on console
