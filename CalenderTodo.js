@@ -2,7 +2,6 @@ import React, {Component, useState, useEffect} from 'react';
 import { StyleSheet, Text, View, Button, Alert, TextInput, Image, FlatList, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 
-
 import * as SQLite from 'expo-sqlite';
 
 // Keyboard piiloon
@@ -24,8 +23,7 @@ export default function CalendarTodo( {route, navigation}) {
   const {asd} =route.params; // vastaanottaa tiedot    CalendarScreenista 
   const db = SQLite.openDatabase('calendardb1.db');
 
-  
- 
+         // ---> TÄHÄN JOKIN FUNKTIO PÄIVITTÄMÄÄN TODO LISTA ENNEN "Save todo" painamista ???
 
 
          //Submits the todo text value and calendar's date
@@ -45,18 +43,6 @@ export default function CalendarTodo( {route, navigation}) {
             })
           }
           )
-
-          // Save todo (replaces submitButton)
-          const saveTodo = () => {
-          const todo = asd + teksti;
-  
-            db.transaction(tx => {
-                tx.executeSql('insert into todotable (todo) values (?);', [todo]);    
-              }, null, updateTodo
-            )
-            console.log();
-          }
-
           // Update todolist
           const updateTodo = () => {
             db.transaction(tx => {
@@ -65,6 +51,18 @@ export default function CalendarTodo( {route, navigation}) {
               )
             })
           }
+          // Save todo (replaces submitButton)
+          const saveTodo = () => {
+          const todo = asd + teksti; // LOPUKSI ASD JA TEKSI ERILLISIKSI PARAMETREIKSI
+  
+            db.transaction(tx => {
+                tx.executeSql('insert into todotable (todo) values (?);', [todo]);    
+              }, null, updateTodo
+            )
+            console.log();
+          }
+
+        
 
           // Delete todo
           const deleteTodo = (id) => {
@@ -75,7 +73,7 @@ export default function CalendarTodo( {route, navigation}) {
             )
           }
 
-
+          // listauksen välit
           const listSeparator = () => {
             return (
               <View
@@ -105,7 +103,7 @@ export default function CalendarTodo( {route, navigation}) {
               value={teksti}
               
               />
-                <Button title="Submit" onPress={saveTodo}/> 
+                <Button title="Save todo" onPress={saveTodo}/> 
               
             </View>
             <View style ={styles.container}>
@@ -120,20 +118,24 @@ export default function CalendarTodo( {route, navigation}) {
                   )}
                   />
               */}
-
+           
             <FlatList 
-            style={{marginLeft : "5%"}}
+            style={{marginLeft : "0%"}}
             keyExtractor={item => item.id.toString()} 
             renderItem={({item}) => <View style={styles.listcontainer}>
-              <Text style={{fontSize: 18}}>{item.id}. {item.todo}</Text>
-            <Text style={{fontSize: 18, color: '#0000ff'}} onPress={() => deleteTodo(item.id)}> Delete</Text>
-                                    </View>} 
+              <Text style={{fontSize: 18}}>{item.id}.     {item.todo}</Text>
+            <Text style={{fontSize: 18, color: '#FF0000'}} onPress={() => deleteTodo(item.id)}>        Delete</Text>
+            <Text></Text>
+            <Text style={{fontSize: 18, color: '#0000ff'}} onPress={() => updateTodo(item.id)}>        Edit</Text> 
+            <Text></Text>
+
+                                    </View>} // JOS SAIS VAIKKA EDIT -OMINAISUUDEN TOIMIMAAN
                                     
             data={todos} 
             ItemSeparatorComponent={listSeparator} 
             
           />   
-
+            
             </View>
         
           </View>
@@ -160,7 +162,6 @@ const styles = StyleSheet.create({
       
     },
   }); 
-  
   
   const styles3 = StyleSheet.create({
     container: {
