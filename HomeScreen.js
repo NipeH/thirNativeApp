@@ -108,6 +108,12 @@ const buttonPressed10 = () => {
   
 }
 
+// ShoppingScreen
+const buttonPressed11 = () => {
+  navigation.navigate('Shopping');
+  
+}
+
 
 
 
@@ -151,6 +157,7 @@ const buttonPressed10 = () => {
                     <Button title="Calendar" onPress={buttonPressed8}/> 
                     <Button title="Todo" onPress={buttonPressed9}/> 
                     <Button title="Courses" onPress={buttonPressed10}/> 
+                    <Button title="Shopping" onPress={buttonPressed11}/> 
 
 
           

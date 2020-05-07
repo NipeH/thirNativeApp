@@ -17,6 +17,7 @@ import ConvertScreen from './ConvertScreen';
 import CalendarScreen from './CalendarScreen';
 import CalenderTodo from './CalenderTodo';
 import CourseScreen from './CourseScreen'; 
+import ShoppingScreen from './ShoppingScreen';
 
 const Stack = createStackNavigator();
 
@@ -42,6 +43,8 @@ export default function App() {
             <Stack.Screen name="Calendar" component={CalendarScreen}  />
             <Stack.Screen name="Todo" component={CalenderTodo}  />
             <Stack.Screen name="Courses" component={CourseScreen}  />
+            <Stack.Screen name="Shopping" component={ShoppingScreen}  />
+
            
        </Stack.Navigator>
 
