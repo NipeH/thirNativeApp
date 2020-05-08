@@ -14,6 +14,8 @@ export default function CalendarScreen( {route, navigation}) {
                 const pvm = date.day + '.' + date.month + '.' + date.year + ' ';
                 setPvm(pvm)
                 setData([...data, {pvm}]);
+                Alert.alert(pvm , 'selected');
+                
               }
 
 
