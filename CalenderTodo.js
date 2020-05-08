@@ -1,10 +1,10 @@
 import React, {Component, useState, useEffect} from 'react';
-import { StyleSheet, Text, View, Button, Alert, TextInput, Image, FlatList, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StyleSheet, Text, View, Alert, TextInput, Image, FlatList, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useTheme } from '@react-navigation/native';
-
+import { Input, Button } from 'react-native-elements';
 import * as SQLite from 'expo-sqlite';
 
-// Keyboard piiloon
+// Hide Keyboard
 const DismissKeyboard = ({ children }) => (
 
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -20,15 +20,15 @@ export default function CalendarTodo( {route, navigation}) {
   const [todo, setTodo] = useState('');
   const [data, setData] = useState([]);
   const [todos, setTodos] = useState([]);
-  const {asd} =route.params; // vastaanottaa tiedot    CalendarScreenista 
-  const db = SQLite.openDatabase('calendardb1.db');
+  const {pvm} =route.params; // receives data from   CalendarScreen
+  const db = SQLite.openDatabase('calendardb2.db'); // SQLite Database
 
          // ---> TÄHÄN JOKIN FUNKTIO PÄIVITTÄMÄÄN TODO LISTA ENNEN "Save todo" painamista ???
 
 
          //Submits the todo text value and calendar's date
         /*   const submitButton = () => {
-            const todo = asd + teksti;
+            const todo = pvm + teksti;
             setTodo(todo)
             setData([...data, {todo}]);
 
@@ -36,8 +36,9 @@ export default function CalendarTodo( {route, navigation}) {
 
           // SQLite hommat
           
-          // Creates SQLite tables for id, asd and teksti
+          // Creates SQLite tables for id, pvm and teksti
           useEffect(()=> {
+
             db.transaction(tx => {
               tx.executeSql('create table if not exists todotable ( id integer primary key not null, todo text);');
             })
@@ -45,6 +46,7 @@ export default function CalendarTodo( {route, navigation}) {
           )
           // Update todolist
           const updateTodo = () => {
+            
             db.transaction(tx => {
               tx.executeSql('Select * from todotable;', [], (_, { rows }) =>
               setTodos(rows._array)
@@ -53,7 +55,7 @@ export default function CalendarTodo( {route, navigation}) {
           }
           // Save todo (replaces submitButton)
           const saveTodo = () => {
-          const todo = asd + teksti; // LOPUKSI ASD JA TEKSI ERILLISIKSI PARAMETREIKSI
+          const todo = pvm + teksti; // LOPUKSI PVM JA TEKSI ERILLISIKSI PARAMETREIKSI
   
             db.transaction(tx => {
                 tx.executeSql('insert into todotable (todo) values (?);', [todo]);    
@@ -90,23 +92,22 @@ export default function CalendarTodo( {route, navigation}) {
   return (
     <DismissKeyboard>
         
-          <View style={styles.container}>
+          <View>
                     
                <Text>CalendarTodo</Text>
             
-            <View style={styles.container}>
-                 <Text>Chosen date {(asd)}</Text>
+            <View>
+              <Text>Chosen date {(pvm)}</Text>
 
-              <TextInput // Syötä TODO tai jtn tekstiä tietylle päivämäärälle 
-              style={{width: 200,height:30, borderColor: 'gray', borderWidth: 2}}
+              <Input placeholder='Whats up?'  // Syötä TODO tai jtn tekstiä tietylle päivämäärälle 
+              
               onChangeText={teksti => setTeksti(teksti)}
               value={teksti}
-              
               />
-                <Button title="Save todo" onPress={saveTodo}/> 
+                <Button title="Save / Refresh" onPress={saveTodo}/> 
               
             </View>
-            <View style ={styles.container}>
+            <View>
 
               {/*   Flatlist ilman SQLitea
               <FlatList // TOIMII tulostaa asdasdasd{teksti}
@@ -120,16 +121,17 @@ export default function CalendarTodo( {route, navigation}) {
               */}
            
             <FlatList 
-            style={{marginLeft : "0%"}}
+            
             keyExtractor={item => item.id.toString()} 
-            renderItem={({item}) => <View style={styles.listcontainer}>
-              <Text style={{fontSize: 18}}>{item.id}.     {item.todo}</Text>
-            <Text style={{fontSize: 18, color: '#FF0000'}} onPress={() => deleteTodo(item.id)}>        Delete</Text>
-            <Text></Text>
-            <Text style={{fontSize: 18, color: '#0000ff'}} onPress={() => updateTodo(item.id)}>        Edit</Text> 
+            renderItem={({item}) => <View>
+              <Text>{item.id}.     {item.todo} </Text>
+            
+            
+            <Text style={{fontSize: 18, color: '#0000ff'}} onPress={() => updateTodo(item.id)}>         Edit <Text style={{fontSize: 18, color: '#FF0000'}} onPress={() => deleteTodo(item.id)}>Delete</Text>
+          </Text> 
             <Text></Text>
 
-                                    </View>} // JOS SAIS VAIKKA EDIT -OMINAISUUDEN TOIMIMAAN
+                                    </View>} // Kesken
                                     
             data={todos} 
             ItemSeparatorComponent={listSeparator} 
@@ -189,7 +191,7 @@ const styles = StyleSheet.create({
        <Text>CalendarTodo</Text>
     
     <View style={styles.container}>
-         <Text>{(asd)}</Text>
+         <Text>{(pvm)}</Text>
 
       <TextInput // Syötä TODO tai jtn tekstiä tietylle päivämäärälle 
       style={{width: 200,height:30, borderColor: 'gray', borderWidth: 2}}

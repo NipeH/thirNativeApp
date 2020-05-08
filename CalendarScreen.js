@@ -6,13 +6,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 export default function CalendarScreen( {route, navigation}) {
-              const [asd, setAsd] =useState('');
+              
+              const [pvm, setPvm] =useState('');
               const [data, setData] = useState([]);
 
               const dayPressed = (date) => {
-                const asd = date.day + '.' + date.month + '.' + date.year + ' ';
-                setAsd(asd)
-                setData([...data, {asd}]);
+                const pvm = date.day + '.' + date.month + '.' + date.year + ' ';
+                setPvm(pvm)
+                setData([...data, {pvm}]);
               }
 
 
@@ -23,7 +24,6 @@ export default function CalendarScreen( {route, navigation}) {
                   
                   <CalendarList
                     // https://github.com/wix/react-native-calendars <-- DOCUMENTS ABOUT THIS CALENDAR!
-
 
                     // Callback which gets executed when visible months change in scroll view. Default = undefined
                     onVisibleMonthsChange={(months) => {console.log('now these months are visible', months);}}
@@ -45,12 +45,12 @@ export default function CalendarScreen( {route, navigation}) {
                     maxDate={'2020-12-31'} 
                     />
 
-                   
-                    <FlatList 
+                    
+                    <FlatList // Sends date data CalenderTodo.js
                            data={data}
                            renderItem={({item}) => (
                              navigation.navigate('Todo', item)>
-                           <Text>testi{item.asd}</Text>
+                           <Text>testi{item.pvm}</Text>
              
                          
                          )}

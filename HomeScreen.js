@@ -90,13 +90,13 @@ const buttonPressed7 = () => {
   
 }
 
-// CalendarScreen
+// CalendarScreen ------------- project
 const buttonPressed8 = () => {
   navigation.navigate('Calendar');
   
 }
 
-// CalendarScreen
+// CalendarScreen ------------- project
 const buttonPressed9 = () => {
   navigation.navigate('Todo');
   
@@ -130,7 +130,7 @@ const buttonPressed11 = () => {
       <View style={styles.container}>
           
           <View style={styles.container}>
-            <Text>LASKIN NATIVE APP</Text>
+           {/*  <Text>LASKIN NATIVE APP</Text>
         
               <Text>Result: {sum} </Text>
         
@@ -153,11 +153,17 @@ const buttonPressed11 = () => {
                     <Button title="Networks" onPress={buttonPressed4}/> 
                     <Button title="Recipes" onPress={buttonPressed5}/> 
                     <Button title="Map" onPress={buttonPressed6}/> 
-                    <Button title="Convert" onPress={buttonPressed7}/> 
+                    <Button title="Convert" onPress={buttonPressed7}/>  */}
+                    <Text>Calendar App</Text>
+
+                    <Text></Text>
+                    <Text></Text>
+                    <Text></Text>
                     <Button title="Calendar" onPress={buttonPressed8}/> 
                     <Button title="Todo" onPress={buttonPressed9}/> 
-                    <Button title="Courses" onPress={buttonPressed10}/> 
-                    <Button title="Shopping" onPress={buttonPressed11}/> 
+
+                  {/*   <Button title="Courses" onPress={buttonPressed10}/> 
+                    <Button title="Shopping" onPress={buttonPressed11}/>  */}
 
 
           

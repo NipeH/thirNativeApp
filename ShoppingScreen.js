@@ -1,14 +1,8 @@
 import React, {Component, useState, useEffect} from 'react';
-import { StyleSheet, Text, View, Button, TextInput, FlatList, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
-
+import { StyleSheet, Text, View, TextInput, FlatList,} from 'react-native';
+import { Input, Button, ListItem } from 'react-native-elements';
 
 import * as SQLite from 'expo-sqlite';
-import {Calendar, CalendarList, Agenda} from 'react-native-calendars'; // https://github.com/wix/react-native-calendars
-import SettingScreen from './SettingScreen';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { useSafeArea } from 'react-native-safe-area-context';
-
 
 export default function ShoppingScreen ( {route, navigation}) {
 
@@ -53,50 +47,70 @@ const deleteItem = (id) => {
   )    
 }
 
-const listSeparator = () => {
-  return (
-    <View
-      style={{
-        height: 10,
-        width: "80%",
-        backgroundColor: "#fff",
-        marginLeft: "10%"
-      }}
-    />
-  );
-};
+
+
+        
+     
+
 
 
 return (
 
   
-    <View style={styles.container}>
+    <View>
 
      
-       <View style={styles.container}>
+       <View>
 
-      <TextInput placeholder='Product' style={{marginTop: 30, fontSize: 18, width: 200, borderColor: 'gray', borderWidth: 1}}
+      <Input placeholder='product' label='PRODUCT'
         onChangeText={(product) => setProduct(product)}
         value={product}/>  
-      <TextInput placeholder='Amount'  style={{ marginTop: 5, marginBottom: 5,  fontSize:18, width: 200, borderColor: 'gray', borderWidth: 1}}
+      <Input placeholder='amount' label='AMOUNT'
         onChangeText={(amount) => setAmount(amount)}
         value={amount}/>      
 
+      <Button onPress={saveItem} title="SAVE" /> 
+      
 
-
-      <Button onPress={saveItem} title="Save" /> 
-      <Text style={{marginTop: 30, fontSize: 20}}>Shopping list</Text>
-
-
-      <FlatList 
-        style={{marginLeft : "5%"}}
+        
+      {/* <FlatList 
         keyExtractor={item => item.id.toString()} 
-        renderItem={({item}) => <View style={styles.listcontainer}><Text style={{fontSize: 18}}>{item.product}, {item.amount} <Text style={{fontSize: 18, color: '#0000ff'}} onPress={() => deleteItem(item.id)}> Bought</Text></Text>
+        renderItem={({item}) => 
+        <View>
+        <Text style={{fontSize: 18}}>{item.product}, {item.amount} 
+        <Text style={{fontSize: 18, color: '#0000ff'}} onPress={() => deleteItem(item.id)}> Bought</Text>
+        </Text>
       
         </View>} 
         data={products} 
-        ItemSeparatorComponent={listSeparator} 
-      />      
+      />     */}
+
+
+
+
+        <View>
+        <FlatList
+       
+        keyExtractor={item => item.id.toString()} 
+        renderItem={({item}) => 
+            <ListItem
+            
+            product={item.product}
+            amount={item.amount}
+            onPress={() => deleteItem(item.id)}
+            
+              
+          />
+        }
+         data={products} 
+        
+
+            />
+
+        </View> 
+
+
+
     </View>
             
             
