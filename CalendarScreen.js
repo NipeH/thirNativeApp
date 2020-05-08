@@ -1,7 +1,7 @@
 import React, {Component, useState} from 'react';
 import { StyleSheet, Text, View, Button, Alert, TextInput, Image, FlatList, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import {Calendar, CalendarList, Agenda} from 'react-native-calendars'; // https://github.com/wix/react-native-calendars
-import SettingScreen from './SettingScreen';
+import {CalendarList} from 'react-native-calendars'; // https://github.com/wix/react-native-calendars
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -14,11 +14,9 @@ export default function CalendarScreen( {route, navigation}) {
                 const pvm = date.day + '.' + date.month + '.' + date.year + ' ';
                 setPvm(pvm)
                 setData([...data, {pvm}]);
-                Alert.alert(pvm , 'selected');
+                Alert.alert(pvm , 'date selected');
                 
               }
-
-
   return (
     
         
@@ -32,19 +30,24 @@ export default function CalendarScreen( {route, navigation}) {
                     // Max amount of months allowed to scroll to the past. Default = 50
                     pastScrollRange={1}
                     // Max amount of months allowed to scroll to the future. Default = 50
-                    futureScrollRange={24}
+                    futureScrollRange={12}
                     // Enable or disable scrolling of calendar list
                     scrollEnabled={true}
                     // Enable or disable vertical scroll indicator. Default = false
                     showScrollIndicator={true}
 
-                    onDayPress={(day) => {dayPressed(day), day}}
+                    onDayPress={(day) => {
+                      dayPressed(day), day}
+                      
+                    }
+
                     //onDayPress={({dateString}) => showDayTest(dateString)}
                         
                      // prints object on console
                     showWeekNumbers={true}
-                    minDate={new Date} // can't use anything in past
-                    maxDate={'2020-12-31'} 
+                    minDate={new Date} // can't click dates in past
+                    maxDate={'2020-12-31'} // change this to dynamic + 12 Months
+                    
                     />
 
                     

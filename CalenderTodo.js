@@ -1,7 +1,6 @@
 import React, {Component, useState, useEffect} from 'react';
 import { StyleSheet, View, Alert, TextInput, Image, FlatList, TouchableWithoutFeedback, Keyboard } from 'react-native';
-
-import { Input, Button, Text } from 'react-native-elements';
+import { Input, Button, Text, Icon} from 'react-native-elements';
 import * as SQLite from 'expo-sqlite';
 
 // Hide Keyboard
@@ -12,24 +11,20 @@ const DismissKeyboard = ({ children }) => (
           </TouchableWithoutFeedback>
         ); 
 
-       
-
 export default function CalendarTodo( {route, navigation}) {
 
   const [teksti, setTeksti] = useState('');
-  const [todo, setTodo] = useState('');
+  
   const [data, setData] = useState([]);
   const [todos, setTodos] = useState([]);
   const {pvm} =route.params; // receives data from   CalendarScreen
+ 
   
   const db = SQLite.openDatabase('calendardb3.db'); // SQLite Database
 
          // ---> TÄHÄN JOKIN FUNKTIO PÄIVITTÄMÄÄN TODO LISTA ENNEN "Save todo" painamista ???
-
-
-
-          // SQLite
           
+         // SQLite
           // Creates SQLite tables for id, pvm and teksti
           useEffect(()=> {
 
@@ -41,22 +36,26 @@ export default function CalendarTodo( {route, navigation}) {
           
           // Save todo 
           const saveTodo = () => {
-  
+            if(pvm == null){
+
+              Alert.alert('You need to select date first!')
+            } else {
             db.transaction(tx => {
                 tx.executeSql('insert into todotable (pvm, teksti) values (?, ?);', [pvm, teksti]);    
               }, null, updateTodo
             )
-            Alert.alert('New item created');
+            Alert.alert('New item created to '+pvm);
             console.log();
-          }
+          }}
           // Update todolist
           const updateTodo = () => {
 
             db.transaction(tx => {
-              tx.executeSql('Select * from todotable;', [], (_, { rows }) =>
+              tx.executeSql('select * from todotable;', [], (_, { rows }) =>
               setTodos(rows._array)
               )
             })
+            
           }
         
           // Delete todo
@@ -81,48 +80,43 @@ export default function CalendarTodo( {route, navigation}) {
                     
                     <View>
                       <Text></Text>
-                      <Text></Text>
-                    
-
+                      
                       <Input placeholder={(pvm)} // Syötä jtn tekstiä tietylle päivämäärälle, joka tallentuu tietokantaan
                       
                       onChangeText={teksti => setTeksti(teksti)}
                       value={teksti}
                       />
-                        <Button title="Save / Refresh" onPress={saveTodo}/> 
+                        <Button title="Save New" onPress={saveTodo}/> 
+                        <Button title="Refresh" 
+                                type="outline"
+                                onPress={updateTodo} /> 
+
                       
                     </View>
                     <View>
 
+                  
+                    <FlatList 
+                    keyExtractor={item => item.id.toString()} 
+                    renderItem={({item}) => <View>
+                      <Text>{item.id}.     {item.pvm} - {item.teksti} </Text>
+                    <Text style={{fontSize: 18, color: '#0000ff'}} onPress={() => updateTodo(item.id)}>         Edit <Text style={{fontSize: 18, color: '#FF0000'}} onPress={() => deleteTodo(item.id)}>Delete</Text>
+                      </Text> 
+                    <Text></Text>
+                    </View>} // Edit Kesken         
+                      data={todos} 
+                      />   
+                    
                       {/*   Flatlist ilman SQLitea
                       <FlatList // TOIMII tulostaa asdasdasd{teksti}
 
                           data={data}
                           renderItem={({item}) => (
                             
-                            <Text>{item.todo}</Text>
+                            <Text>{item.pvm}{item.teksti}</Text>
                           )}
                           />
                       */}
-                  
-                    <FlatList 
-                    
-                    keyExtractor={item => item.id.toString()} 
-                    renderItem={({item}) => <View>
-                      <Text>{item.id}.     {item.pvm} - {item.teksti} </Text>
-                    
-                    
-                    <Text style={{fontSize: 18, color: '#0000ff'}} onPress={() => updateTodo(item.id)}>         Edit <Text style={{fontSize: 18, color: '#FF0000'}} onPress={() => deleteTodo(item.id)}>Delete</Text>
-                      </Text> 
-                    <Text></Text>
-
-                                            </View>} // Kesken
-                                            
-                    data={todos} 
-                  
-                    
-                  />   
-                    
                     </View>
                 
                   </View>
@@ -130,6 +124,10 @@ export default function CalendarTodo( {route, navigation}) {
           );
   }
 
+
+
+
+  // react-native-elements korvaa
 const styles = StyleSheet.create({
     container: {
       flex: 1,

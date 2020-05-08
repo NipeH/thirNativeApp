@@ -45,12 +45,8 @@ export default function App() {
             <Stack.Screen name="Courses" component={CourseScreen}  />
             <Stack.Screen name="Shopping" component={ShoppingScreen}  />
 
-           
        </Stack.Navigator>
 
-
-
-  
     </NavigationContainer>
 
 
